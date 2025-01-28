@@ -1,11 +1,12 @@
 # How many new outputs were created by block 123,456?
+#!/usr/bin/env bash
 
-total_outputs=0
+block_number=123456
+blockhash=$(bitcoin-cli -rpcconnect=84.247.182.145 -rpcuser="user_256" -rpcpassword="LSduUiqlO3wp" getblockhash "$block_number")
 
-for txid in $txids; do
-  outputs=$(bitcoin-cli getrawtransaction "$txid" 1 | jq '.vout | length')
-  total_outputs=$((total_outputs + outputs))
-done
+total_outputs=$(
+  bitcoin-cli -rpcconnect=84.247.182.145 -rpcuser="user_256" -rpcpassword="LSduUiqlO3wp" getblock "$blockhash" 2 \
+  | jq-win64.exe '[.tx[].vout | length] | add'
+)
 
-echo "Total de outputs no bloco 123456: $total_outputs"
-
+echo "$total_outputs"
