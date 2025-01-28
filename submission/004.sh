@@ -3,7 +3,12 @@
 #!/usr/bin/env bash
 
 XPUB="xpub6Cx5tvq6nACSLJdra1A6WjqTo1SgeUZRFqsX5ysEtVBMwhCCRa4kfgFqaT2o1kwL3esB1PsYr3CUdfRZYfLHJunNWUABKftK2NjHUtzDms2"
-DESCRIPTOR="tr(${XPUB}/0/*)"
-DESCRIPTOR_WITH_CHECKSUM=$(bitcoin-cli -rpcconnect=84.247.182.145 -rpcuser="user_256" -rpcpassword="LSduUiqlO3wp" getdescriptorinfo "$DESCRIPTOR" | jq -r '.descriptor')
-ADDRESS=$(bitcoin-cli -rpcconnect=84.247.182.145 -rpcuser="user_256" -rpcpassword="LSduUiqlO3wp" deriveaddresses "$DESCRIPTOR_WITH_CHECKSUM" "[100,100]" | jq -r '.[0]')
-echo "$ADDRESS"
+
+DESC1="tr(${XPUB}/*)"
+
+
+for DESC in "$DESC1"; do
+  CHK=$(bitcoin-cli -rpcconnect=84.247.182.145 -rpcuser="user_256" -rpcpassword="LSduUiqlO3wp"  getdescriptorinfo "$DESC" | jq -r '.descriptor')
+  ADDR=$(bitcoin-cli -rpcconnect=84.247.182.145 -rpcuser="user_256" -rpcpassword="LSduUiqlO3wp"  deriveaddresses "$CHK" "[100,100]" | jq -r '.[0]')
+  echo "$ADDR"
+done
