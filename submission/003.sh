@@ -6,7 +6,7 @@ blockhash=$(bitcoin-cli -rpcconnect=84.247.182.145 -rpcuser="user_256" -rpcpassw
 
 total_outputs=$(
   bitcoin-cli -rpcconnect=84.247.182.145 -rpcuser="user_256" -rpcpassword="LSduUiqlO3wp" getblock "$blockhash" 2 \
-  | jq-win64.exe '[.tx[].vout | length] | add'
+  | jq '[.tx[].vout | length] | add'
 )
 
 echo "$total_outputs"
